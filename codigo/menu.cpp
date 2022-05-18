@@ -8,6 +8,10 @@ int Menu::start() {
     cout << "1) Cenário 1\n";
     cout << "2) Cenário 2\n";
 
+    Graph g = e.getGraph();
+
+    g.printDirections();
+
     while (option) {
         cout << "\nInsere opção (0 para sair)\n";
         cin >> option;

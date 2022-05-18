@@ -209,3 +209,15 @@ int Graph::prim(int r) {
 
     return sum;
 }
+
+int Graph::printDirections() const {
+    for (int i=1; i<=n; i++) {
+        printf("%d ", i);
+        auto itr = nodes[i].adj.begin();
+        for (; itr!=nodes[i].adj.end(); itr++) {
+            printf("-> %d ", itr->dest);
+        }
+        printf("\n");
+    }
+    return 0;
+}

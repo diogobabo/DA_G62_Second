@@ -53,6 +53,8 @@ public:
     bool hasCycle();
     int prim(int v);
     int kruskal();
+
+    int printDirections() const;
 };
 
 #endif //DA_T6_G62_GRAPH_H
