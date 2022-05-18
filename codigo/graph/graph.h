@@ -14,6 +14,7 @@ class Graph {
     struct Edge {
         int dest;   // Destination node
         int weight; // An integer weight
+        int capacity;
     };
 
     struct Node {
@@ -32,7 +33,7 @@ public:
     explicit Graph(int nodes, bool dir = false);
 
     // Add edge from source to destination with a certain weight
-    void addEdge(int src, int dest, int weight = 1);
+    void addEdge(int src, int dest, int weight = 1, int capacity = 1);
 
     // Depth-First Search: example implementation
     int dfs(int v);
