@@ -5,7 +5,7 @@
 #include "menu.h"
 #include "empresa.h"
 
-Graph readFile(const string file) {
+Graph readFile(const string& file) {
     ifstream f;
     f.open(file);
     string nodes, edges;
