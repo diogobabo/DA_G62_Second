@@ -132,10 +132,6 @@ int Graph::diameter() {
     return diameter;
 }
 
-bool Graph::hasCycle() {
-    return false;
-}
-
 int Graph::kruskal() {
     MinHeap<int, int> heap(100, 0);
     DisjointSets<int> disjointSets;
@@ -210,7 +206,7 @@ int Graph::prim(int r) {
     return sum;
 }
 
-int Graph::printDirections() const {
+int Graph::printDirections() {
     for (int i=1; i<=n; i++) {
         printf("%d ", i);
         auto itr = nodes[i].adj.begin();

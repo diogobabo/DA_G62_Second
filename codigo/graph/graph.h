@@ -54,7 +54,7 @@ public:
     int prim(int v);
     int kruskal();
 
-    int printDirections() const;
+    int printDirections();
 };
 
 #endif //DA_T6_G62_GRAPH_H
