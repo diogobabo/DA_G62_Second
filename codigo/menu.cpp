@@ -32,6 +32,15 @@ int Menu::start() {
 
 int Menu::Cenario1() {
     class Cenario1 c1(&e);
+
+    int s, t;
+    cout << "Starting point: ";
+    cin >> s;
+    cout << "Ending point: ";
+    cin >> t;
+
+    cout << "Caminhos de capacidade máxima entre s para t: " << c1.MaxCapWays(s, t);
+
     return 0;
 
 }

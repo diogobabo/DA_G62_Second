@@ -9,6 +9,7 @@ private:
     Graph g;
 public:
     explicit Cenario1(Empresa *e): g(e->getGraph()){}
+    int MaxCapWays(int s, int t);
 };
 
 class Cenario2 {
@@ -16,6 +17,8 @@ private:
     Graph g;
 public:
     explicit Cenario2(Empresa *e): g(e->getGraph()){}
+
+    int maxFlow(int s, int t);
 };
 
 #endif //DA_T6_G62_CENARIOS_H

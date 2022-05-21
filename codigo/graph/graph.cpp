@@ -2,6 +2,7 @@
 #include "graph.h"
 #include <map>
 #include <algorithm>
+#include <climits>
 
 // Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
@@ -216,4 +217,33 @@ int Graph::printDirections() {
         printf("\n");
     }
     return 0;
+}
+
+void Graph::MaxCapWays(int s) {
+    for (int v=1; v<=n; v++) { nodes[v].parent = -1; nodes[v].distance = 0; }
+    nodes[s].distance = INT_MAX / 2;
+
+    MaxHeap<int, int> heap(n, -1);
+    heap.insert(s, nodes[s].distance);
+    for(int v=1;v<=n; v++) heap.insert(v, nodes[v].distance);
+
+    while(heap.getSize()>0) {
+        int v = heap.removeMax();
+
+        Node* u = &nodes[v];
+        for(Edge &e: u->adj){
+            if(!heap.hasKey(e.dest)) continue;
+            if(nodes[e.dest].distance < min(u->distance, e.capacity)){
+                nodes[e.dest].parent=v;
+                nodes[e.dest].distance=e.capacity;
+                heap.increaseKey(e.dest, e.capacity);
+            }
+        }
+    }
+}
+
+vector<int> Graph::getDistances() {
+    vector<int> d;
+    for(int v=0; v<=n; v++) d.push_back(nodes[v].distance);
+    return d;
 }

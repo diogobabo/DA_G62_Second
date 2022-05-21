@@ -6,6 +6,7 @@
 #include <queue>
 #include <iostream>
 #include "minHeap.h"
+#include "maxHeap.h"
 #include "disjointSets.h"
 
 using namespace std;
@@ -30,6 +31,9 @@ class Graph {
     vector<Node> nodes; // The list of nodes being represented
 
 public:
+
+    vector<int> getDistances();
+
     // Constructor: nr nodes and direction (default: undirected)
     explicit Graph(int nodes, bool dir = false);
 
@@ -56,6 +60,8 @@ public:
     int kruskal();
 
     int printDirections();
+
+    void MaxCapWays(int s);
 };
 
 #endif //DA_T6_G62_GRAPH_H
