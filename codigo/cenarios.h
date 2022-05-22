@@ -13,6 +13,8 @@ public:
     int getPath(vector<int> *path, int t);
 
     int MinTransbordos(int s, int t);
+
+    int pathCap(vector<int> vector1);
 };
 
 class Cenario2 {

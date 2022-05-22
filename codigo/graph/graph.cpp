@@ -95,16 +95,14 @@ list<int> Graph::topologicalSorting() {
     return order;
 }
 
-vector<int> Graph::bfshelper(int a) {
-    vector<int> distances(nodes.size(), -1);
-    distances[a] = 0;
+void Graph::bfshelper(int a) {
     for (int v=1; v<=n; v++) {nodes[v].visited = false; nodes[v].parent = -1; nodes[v].distance = 0;};
     queue<int> q; // queue of unvisited nodes
     q.push(a);
     nodes[a]. visited = true;
     while (!q.empty()) { // while there are still unvisited nodes
         int u = q.front(); q.pop();
-        cout << u << " "; // show node order
+        //cout << u << " "; // show node order
         for (auto e : nodes[u].adj) {
             int w = e.dest;
             if (!nodes[w].visited) {
@@ -115,19 +113,20 @@ vector<int> Graph::bfshelper(int a) {
             }
         }
     }
-    return distances;
 }
 
 int Graph::distance(int a, int b) {
-    return bfshelper(a)[b];
+    bfshelper(a);
+    return nodes[b].distance;
 }
 
 int Graph::diameter() {
     if(this->connectedComponents()>1) return -1;
     int diameter = 0;
     for(int i=1; i<nodes.size(); i++){
-        vector<int> tmp = bfshelper(i);
-        for(int j : tmp){
+        bfshelper(i);
+        for(Node k : nodes){
+            int j = k.distance;
             if(j>diameter) diameter=j;
         }
     }
@@ -259,6 +258,15 @@ void Graph::getPath(vector<int> *path, int t) {
     reverse(path->begin(), path->end());
 }
 
-void Graph::minTransbordos(int s, int t) {
-    bfshelper(s);
+int Graph::pathCapacity(vector<int> vector1) {
+    int cap = INT_MAX / 2;
+    for (int i = 0; i < vector1.size() - 1; i++) {
+        int w = vector1[i];
+        for(auto e: nodes[w].adj) {
+            if(e.dest == vector1[i + 1]) {
+                if(e.capacity < cap) cap = e.capacity;
+            }
+        }
+    }
+    return cap;
 }

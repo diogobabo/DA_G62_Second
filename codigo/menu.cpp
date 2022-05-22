@@ -55,10 +55,11 @@ int Menu::Cenario1() {
 
     path.clear();
     // Menos transbordos
-    groupD = c1.MinTransbordos(s, t);
+    int transbordos = c1.MinTransbordos(s, t);
     c1.getPath(&path, t);
+    groupD = c1.pathCap(path);
 
-    cout << "Mínimo de transbordos entre " << s << " para " << t << ": " << path.size()-1 << endl;
+    cout << "Mínimo de transbordos entre " << s << " para " << t << ": " << transbordos << endl;
     cout << "Dimensão máxima do grupo (sem se separar): " << groupD << endl;
     cout << path[0];
     for (int i = 1; i < path.size(); i++) {

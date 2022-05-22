@@ -12,7 +12,11 @@ int Cenario1::getPath(vector<int> *path, int t) {
 }
 
 int Cenario1::MinTransbordos(int s, int t) {
-    g.minTransbordos(s, t);
+    g.distance(s, t);
     vector<int> d = g.getDistances();
     return d[t];
+}
+
+int Cenario1::pathCap(vector<int> vector1) {
+    return g.pathCapacity(vector1);
 }

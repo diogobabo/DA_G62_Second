@@ -30,6 +30,8 @@ class Graph {
     bool hasDir;        // false: undirect; true: directed
     vector<Node> nodes; // The list of nodes being represented
 
+    void allPathsUntil(int i, int u, bool[], int[], int&);
+
 public:
 
     vector<int> getDistances();
@@ -52,7 +54,7 @@ public:
     int giantComponent();
     void dfshelper(int v, list<int>& order);
     list<int> topologicalSorting();
-    vector<int> bfshelper(int a);
+    void bfshelper(int a);
     int distance(int a, int b);
     int diameter();
     bool hasCycle();
@@ -65,7 +67,7 @@ public:
 
     void getPath(vector<int> *pVector, int t);
 
-    void minTransbordos(int s, int t);
+    int pathCapacity(vector<int> vector1);
 };
 
 #endif //DA_T6_G62_GRAPH_H
