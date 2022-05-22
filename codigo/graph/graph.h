@@ -62,6 +62,10 @@ public:
     int printDirections();
 
     void MaxCapWays(int s);
+
+    void getPath(vector<int> *pVector, int t);
+
+    void minTransbordos(int s, int t);
 };
 
 #endif //DA_T6_G62_GRAPH_H

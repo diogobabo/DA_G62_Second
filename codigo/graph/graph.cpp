@@ -98,7 +98,7 @@ list<int> Graph::topologicalSorting() {
 vector<int> Graph::bfshelper(int a) {
     vector<int> distances(nodes.size(), -1);
     distances[a] = 0;
-    for (int v=1; v<=n; v++) nodes[v].visited = false;
+    for (int v=1; v<=n; v++) {nodes[v].visited = false; nodes[v].parent = -1; nodes[v].distance = 0;};
     queue<int> q; // queue of unvisited nodes
     q.push(a);
     nodes[a]. visited = true;
@@ -110,7 +110,8 @@ vector<int> Graph::bfshelper(int a) {
             if (!nodes[w].visited) {
                 q.push(w);
                 nodes[w].visited = true;
-                distances[w] = distances[u] + 1;
+                nodes[w].parent = u;
+                nodes[w].distance = nodes[u].distance + 1;
             }
         }
     }
@@ -246,4 +247,18 @@ vector<int> Graph::getDistances() {
     vector<int> d;
     for(int v=0; v<=n; v++) d.push_back(nodes[v].distance);
     return d;
+}
+
+void Graph::getPath(vector<int> *path, int t) {
+    int i = t;
+    while(1) {
+        path->push_back(i);
+        i = nodes[i].parent;
+        if(i <= 0 || nodes[i].parent==i) break;
+    }
+    reverse(path->begin(), path->end());
+}
+
+void Graph::minTransbordos(int s, int t) {
+    bfshelper(s);
 }

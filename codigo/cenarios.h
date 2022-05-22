@@ -10,6 +10,9 @@ private:
 public:
     explicit Cenario1(Empresa *e): g(e->getGraph()){}
     int MaxCapWays(int s, int t);
+    int getPath(vector<int> *path, int t);
+
+    int MinTransbordos(int s, int t);
 };
 
 class Cenario2 {

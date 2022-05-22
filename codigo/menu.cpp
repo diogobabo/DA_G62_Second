@@ -39,7 +39,32 @@ int Menu::Cenario1() {
     cout << "Ending point: ";
     cin >> t;
 
-    cout << "Caminhos de capacidade máxima entre s para t: " << c1.MaxCapWays(s, t);
+    // Maior capacidade
+
+    int groupD = c1.MaxCapWays(s, t);
+    vector<int> path;
+    c1.getPath(&path, t);
+
+    cout << "Dimensão do grupo (sem se separar) máxima entre " << s << " para " << t << ": " << groupD << endl;
+    cout << "Número de transbordos: " << path.size()-1 << endl;
+    cout << path[0];
+    for (int i = 1; i < path.size(); i++) {
+        cout << " -> "<< path[i];
+    }
+    cout << endl;
+
+    path.clear();
+    // Menos transbordos
+    groupD = c1.MinTransbordos(s, t);
+    c1.getPath(&path, t);
+
+    cout << "Mínimo de transbordos entre " << s << " para " << t << ": " << path.size()-1 << endl;
+    cout << "Dimensão máxima do grupo (sem se separar): " << groupD << endl;
+    cout << path[0];
+    for (int i = 1; i < path.size(); i++) {
+        cout << " -> "<< path[i];
+    }
+    cout << endl;
 
     return 0;
 
