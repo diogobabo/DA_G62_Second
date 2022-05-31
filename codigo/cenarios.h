@@ -27,7 +27,7 @@ public:
 
     int maxFlow(int s, int t);
 
-    int fordFulkerson(Graph graph, int i, int i1);
+    int fordFulkerson(Graph graph, int i, int i1, vector<vector<int>> *paths);
 };
 
 #endif //DA_T6_G62_CENARIOS_H

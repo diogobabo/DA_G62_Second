@@ -69,9 +69,11 @@ public:
 
     int pathCapacity(vector<int> vector1);
 
-    static int fordFulkerson(Graph residual, int s, int t);
+    static int fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths);
 
     Graph createResidual();
+
+    int getTime(vector<int> vector1);
 };
 
 #endif //DA_T6_G62_GRAPH_H

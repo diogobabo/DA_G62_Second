@@ -1,8 +1,8 @@
 #include <climits>
 #include "cenarios.h"
 
-int Cenario2::fordFulkerson(Graph graph, int i, int i1) {
-    return Graph::fordFulkerson(graph, i, i1);
+int Cenario2::fordFulkerson(Graph graph, int i, int i1, vector<vector<int>> *path) {
+    return Graph::fordFulkerson(graph, i, i1, path);
 }
 
 

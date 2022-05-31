@@ -81,9 +81,27 @@ int Menu::Cenario2() {
     cin >> t;
 
     Graph residual = this->e.getGraph().createResidual();
+    vector<vector<int>> paths;
 
-    int max_flow = c2.fordFulkerson(residual, s, t);
+    int max_flow = c2.fordFulkerson(residual, s, t, &paths);
     cout << "Ford-Fulkerson max_flow : " << max_flow << endl;
+
+    int max_time = 0;
+    for (auto path : paths) {
+        int time = this->e.getGraph().getTime(path);
+        max_time = max(max_time, time);
+
+        cout << path[0];
+        for (int i = 1; i < path.size(); i++) {
+            cout << " -> "<< path[i];
+
+        }
+        cout << endl;
+    }
+
+
+
+    cout << "The group will be reunited after : " << max_time << endl;
     return 0;
 
 }

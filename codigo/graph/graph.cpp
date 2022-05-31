@@ -256,6 +256,7 @@ void Graph::getPath(vector<int> *path, int t) {
         i = nodes[i].parent;
         if(i <= 0 || nodes[i].parent==i) break;
     }
+    if (nodes[i].parent==i) path->push_back(i);
     reverse(path->begin(), path->end());
 }
 
@@ -272,7 +273,7 @@ int Graph::pathCapacity(vector<int> vector1) {
     return cap;
 }
 
-int Graph::fordFulkerson(Graph residual, int s, int t) {
+int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths) {
     int max_flow = 0;
 
     while (true) {
@@ -296,7 +297,9 @@ int Graph::fordFulkerson(Graph residual, int s, int t) {
                 if(e.dest == u) e.capacity += path_flow;
             }
         }
-
+        vector<int> path;
+        residual.getPath(&path, t);
+        paths->push_back(path);
         max_flow += path_flow;
     }
 
@@ -318,4 +321,20 @@ Graph Graph::createResidual() {
         }
     }
     return r;
+}
+
+int Graph::getTime(vector<int> vector1) {
+    int time = 0;
+
+    for (int i = 0; i < vector1.size() - 1; i++) {
+        int u = vector1[i];
+        int v = vector1[i + 1];
+        for (auto e : nodes[u].adj) {
+            if(e.dest == v) {
+                time += e.weight;
+                break;
+            }
+        }
+    }
+    return time;
 }
