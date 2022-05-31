@@ -75,7 +75,7 @@ int Menu::Cenario1() {
                 break;
             case 2:
                 cout << "1.2) " << endl;
-                
+
                 // Menos transbordos
                 int transbordos = c1.MinTransbordos(s, t);
                 c1.getPath(&path, t);
