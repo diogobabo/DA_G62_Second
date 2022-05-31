@@ -47,7 +47,9 @@ void Empresa::two1(int s, int t) {
 
     vector<vector<int>> paths;
     Graph residual = rede.createResidual();
-    Graph::fordFulkerson(residual, s, t, &paths, dimension);
+    int maxFlow = Graph::fordFulkerson(residual, s, t, &paths, dimension);
+
+    if (maxFlow < dimension) cout << "Can only transport " << maxFlow << " persons;" << endl;
 
     for (auto path : paths) {
         cout << path[0];
@@ -68,6 +70,7 @@ void Empresa::two1(int s, int t) {
     }
 
     if(!paths.empty()) cout << "Correção de encaminhamento para maior dimensão do grupo: " << endl;
+    else cout << "Não foi necessária correção de encaminhamento" << endl;
     for (auto path : paths) {
         cout << path[0];
         for (int i = 1; i < path.size(); i++) {
