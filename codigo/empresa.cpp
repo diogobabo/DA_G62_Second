@@ -1,3 +1,4 @@
+#include <chrono>
 #include "empresa.h"
 
 void Empresa::one1(int s, int t) {
@@ -44,10 +45,36 @@ void Empresa::two1(int s, int t) {
     cout << "2.1) Size of the group : \n";
     cin >> dimension;
 
-    // after algorithm
+    vector<vector<int>> paths;
+    Graph residual = rede.createResidual();
+    Graph::fordFulkerson(residual, s, t, &paths, dimension);
 
-    cout << "2.2) Resize the group in x unities : x -> ";
+    for (auto path : paths) {
+        cout << path[0];
+        for (int i = 1; i < path.size(); i++) {
+            cout << " -> "<< path[i];
+        }
+        cout << endl;
+    }
+
+    cout << "2.2) Add to the group x unities : x -> ";
     cin >> plus;
+
+    int maxCap = rede.checkMaxCap(paths);
+    paths.clear();
+    if (maxCap < dimension + plus) {
+        residual = rede.createResidual();
+        Graph::fordFulkerson(residual, s, t, &paths, dimension + plus);
+    }
+
+    if(!paths.empty()) cout << "Correção de encaminhamento para maior dimensão do grupo: " << endl;
+    for (auto path : paths) {
+        cout << path[0];
+        for (int i = 1; i < path.size(); i++) {
+            cout << " -> "<< path[i];
+        }
+        cout << endl;
+    }
 
     // algorithm
 }
