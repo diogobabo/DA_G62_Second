@@ -126,7 +126,7 @@ int Graph::diameter() {
     int diameter = 0;
     for(int i=1; i<nodes.size(); i++){
         bfshelper(i);
-        for(Node k : nodes){
+        for(const Node& k : nodes){
             int j = k.distance;
             if(j>diameter) diameter=j;
         }
@@ -232,7 +232,7 @@ void Graph::MaxCapWays(int s) {
         int v = heap.removeMax();
 
         Node* u = &nodes[v];
-        for(Edge &e: u->adj){
+        for(const Edge &e: u->adj){
             if(!heap.hasKey(e.dest)) continue;
             if(nodes[e.dest].distance < min(u->distance, e.capacity)){
                 nodes[e.dest].parent=v;
@@ -251,7 +251,7 @@ vector<int> Graph::getDistances() {
 
 void Graph::getPath(vector<int> *path, int t) {
     int i = t;
-    while(1) {
+    while(true) {
         path->push_back(i);
         i = nodes[i].parent;
         if(i <= 0 || nodes[i].parent==i) break;

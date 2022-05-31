@@ -11,5 +11,4 @@ add_executable(da_t6_g62
         codigo/graph/minHeap.h codigo/graph/disjointSets.h
         codigo/empresa.cpp codigo/empresa.h
         codigo/menu.cpp codigo/menu.h
-        codigo/cenario1.cpp codigo/cenario2.cpp codigo/cenarios.h
         )
