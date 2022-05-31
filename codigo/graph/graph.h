@@ -68,6 +68,10 @@ public:
     void getPath(vector<int> *pVector, int t);
 
     int pathCapacity(vector<int> vector1);
+
+    static int fordFulkerson(Graph residual, int s, int t);
+
+    Graph createResidual();
 };
 
 #endif //DA_T6_G62_GRAPH_H

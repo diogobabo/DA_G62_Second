@@ -73,6 +73,17 @@ int Menu::Cenario1() {
 
 int Menu::Cenario2() {
     class Cenario2 c2(&e);
+
+    int s, t;
+    cout << "Starting point: ";
+    cin >> s;
+    cout << "Ending point: ";
+    cin >> t;
+
+    Graph residual = this->e.getGraph().createResidual();
+
+    int max_flow = c2.fordFulkerson(residual, s, t);
+    cout << "Ford-Fulkerson max_flow : " << max_flow << endl;
     return 0;
 
 }

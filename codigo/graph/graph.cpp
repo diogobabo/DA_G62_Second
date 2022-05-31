@@ -96,7 +96,8 @@ list<int> Graph::topologicalSorting() {
 }
 
 void Graph::bfshelper(int a) {
-    for (int v=1; v<=n; v++) {nodes[v].visited = false; nodes[v].parent = -1; nodes[v].distance = 0;};
+    for (int v=1; v<=n; v++) {nodes[v].visited = false; nodes[v].parent = -1; nodes[v].distance = 0;}
+    nodes[a].parent = a;
     queue<int> q; // queue of unvisited nodes
     q.push(a);
     nodes[a]. visited = true;
@@ -105,7 +106,7 @@ void Graph::bfshelper(int a) {
         //cout << u << " "; // show node order
         for (auto e : nodes[u].adj) {
             int w = e.dest;
-            if (!nodes[w].visited) {
+            if (!nodes[w].visited && e.capacity != 0) {
                 q.push(w);
                 nodes[w].visited = true;
                 nodes[w].parent = u;
@@ -269,4 +270,52 @@ int Graph::pathCapacity(vector<int> vector1) {
         }
     }
     return cap;
+}
+
+int Graph::fordFulkerson(Graph residual, int s, int t) {
+    int max_flow = 0;
+
+    while (true) {
+        residual.bfshelper(s);
+        if(residual.nodes[t].parent == -1) break;
+
+        int path_flow = INT_MAX/2;
+        for (int v = t; v != s; v = residual.nodes[v].parent) {
+            int u = residual.nodes[v].parent;
+            for (auto e: residual.nodes[u].adj) {
+                if (e.dest == v) path_flow = min(path_flow, e.capacity);
+            }
+        }
+
+        for (int v = t; v != s; v = residual.nodes[v].parent) {
+            int u = residual.nodes[v].parent;
+            for (auto &e: residual.nodes[u].adj) {
+                if (e.dest == v) e.capacity -= path_flow;
+            }
+            for (auto &e: residual.nodes[v].adj) {
+                if(e.dest == u) e.capacity += path_flow;
+            }
+        }
+
+        max_flow += path_flow;
+    }
+
+    return max_flow;
+}
+
+Graph Graph::createResidual() {
+    Graph r(this->n, true);
+
+    for (int v = 1; v <= n; v++) {
+        for (auto e: nodes[v].adj) {
+            r.addEdge(v, e.dest, e.weight, e.capacity - e.flow, e.flow);
+        }
+    }
+
+    for (int v = 1; v <= r.n; v++) {
+        for (auto e: r.nodes[v].adj) {
+            r.addEdge(e.dest, v, e.weight, e.flow, e.capacity-e.flow);
+        }
+    }
+    return r;
 }

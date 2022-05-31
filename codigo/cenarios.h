@@ -15,6 +15,8 @@ public:
     int MinTransbordos(int s, int t);
 
     int pathCap(vector<int> vector1);
+
+
 };
 
 class Cenario2 {
@@ -24,6 +26,8 @@ public:
     explicit Cenario2(Empresa *e): g(e->getGraph()){}
 
     int maxFlow(int s, int t);
+
+    int fordFulkerson(Graph graph, int i, int i1);
 };
 
 #endif //DA_T6_G62_CENARIOS_H
