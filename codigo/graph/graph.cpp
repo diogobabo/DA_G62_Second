@@ -273,7 +273,7 @@ int Graph::pathCapacity(vector<int> vector1) {
     return cap;
 }
 
-int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths) {
+int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths, int dimension) {
     int max_flow = 0;
 
     while (true) {
@@ -297,10 +297,12 @@ int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *path
                 if(e.dest == u) e.capacity += path_flow;
             }
         }
+
         vector<int> path;
         residual.getPath(&path, t);
         paths->push_back(path);
         max_flow += path_flow;
+        if (dimension != -1 && max_flow >= dimension) return max_flow;
     }
 
     return max_flow;
@@ -386,5 +388,22 @@ int Graph::minDuration(int s) {
     }
     int a = 2;
     return durMin;
+}
+
+int Graph::checkMaxCap(vector<vector<int>> paths) {
+    int maxCap = 0;
+    for (int i = 0; i < paths.size(); i++) {
+        int cap = 0;
+        for (int j = 0; j < paths[i].size() - 1; j++) {
+            int u = paths[i][j];
+            int v = paths[i][j + 1];
+            for (auto e: nodes[u].adj) {
+                if(e.dest == v) cap = min(cap, e.capacity);
+                if (j == 0) cap = e.capacity;
+            }
+        }
+        maxCap += cap;
+    }
+    return maxCap;
 }
 

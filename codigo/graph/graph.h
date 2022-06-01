@@ -72,11 +72,13 @@ public:
 
     int pathCapacity(vector<int> vector1);
 
-    static int fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths);
+    static int fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
 
     Graph createResidual();
 
     int getTime(vector<int> vector1, int limit = -1);
+
+    int checkMaxCap(vector<vector<int>> paths);
 };
 
 #endif //DA_T6_G62_GRAPH_H
