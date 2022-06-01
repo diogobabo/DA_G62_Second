@@ -1,4 +1,3 @@
-#include <chrono>
 #include "empresa.h"
 
 void Empresa::one1(int s, int t) {
@@ -45,39 +44,10 @@ void Empresa::two1(int s, int t) {
     cout << "2.1) Size of the group : \n";
     cin >> dimension;
 
-    vector<vector<int>> paths;
-    Graph residual = rede.createResidual();
-    int maxFlow = Graph::fordFulkerson(residual, s, t, &paths, dimension);
+    // after algorithm
 
-    if (maxFlow < dimension) cout << "Can only transport " << maxFlow << " persons;" << endl;
-
-    for (auto path : paths) {
-        cout << path[0];
-        for (int i = 1; i < path.size(); i++) {
-            cout << " -> "<< path[i];
-        }
-        cout << endl;
-    }
-
-    cout << "2.2) Add to the group x unities : x -> ";
+    cout << "2.2) Resize the group in x unities : x -> ";
     cin >> plus;
-
-    int maxCap = rede.checkMaxCap(paths);
-    paths.clear();
-    if (maxCap < dimension + plus) {
-        residual = rede.createResidual();
-        Graph::fordFulkerson(residual, s, t, &paths, dimension + plus);
-    }
-
-    if(!paths.empty()) cout << "Correção de encaminhamento para maior dimensão do grupo: " << endl;
-    else cout << "Não foi necessária correção de encaminhamento" << endl;
-    for (auto path : paths) {
-        cout << path[0];
-        for (int i = 1; i < path.size(); i++) {
-            cout << " -> "<< path[i];
-        }
-        cout << endl;
-    }
 
     // algorithm
 }
@@ -105,14 +75,43 @@ void Empresa::two3(int s, int t) {
 }
 
 void Empresa::two4(int s, int t) {
-    int max_time = -1;
+    Graph residual = this->rede.createResidual();
+    vector<vector<int>> paths;
+    vector<pair<int,int>> waitTime;
+    Graph::fordFulkerson(residual, s, t, &paths);
 
-    // algorithm
+    for(int i = 0; i < paths.size(); i++) {
+        for(int j = 1; j < paths[i].size(); j++) {
+            int num = paths[i][j];
+            for(int k = i + 1; k < paths.size(); k++){
+                if(checkCommon(paths[k],num)) {
+                    int temp = rede.getTime(paths[k],num);
+                    int temp2 = rede.getTime(paths[i],num);
+                    int res = abs(temp - temp2);
+                    if(res != 0) {
+                        bool flag = false;
+                        for(auto x : waitTime)  {
+                            if(x.first == num) {
+                                x.second = max(res,x.second);
+                                flag = true;
+                            }
+                        }
+                        if(!flag){
+                            waitTime.emplace_back(num,res);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    cout << "2.4) The group will be reunited after : " << max_time << endl;
+}
 
-    // algorithm
-
-    cout << "2.5) \n";
-
+bool Empresa::checkCommon(vector<int> path, int n) {
+    for(auto x : path) {
+        if(x == n) {
+            return true;
+        }
+    }
+    return false;
 }

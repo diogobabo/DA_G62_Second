@@ -27,6 +27,8 @@ public:
     void two1(int s, int t);
 
     void two4(int s, int t);
+
+    bool checkCommon(vector<int> path, int n);
 };
 
 

@@ -273,7 +273,7 @@ int Graph::pathCapacity(vector<int> vector1) {
     return cap;
 }
 
-int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths, int dimension) {
+int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths) {
     int max_flow = 0;
 
     while (true) {
@@ -297,12 +297,10 @@ int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *path
                 if(e.dest == u) e.capacity += path_flow;
             }
         }
-
         vector<int> path;
         residual.getPath(&path, t);
         paths->push_back(path);
         max_flow += path_flow;
-        if (dimension != -1 && max_flow >= dimension) return max_flow;
     }
 
     return max_flow;
@@ -325,10 +323,13 @@ Graph Graph::createResidual() {
     return r;
 }
 
-int Graph::getTime(vector<int> vector1) {
+int Graph::getTime(vector<int> vector1, int limit) {
     int time = 0;
 
     for (int i = 0; i < vector1.size() - 1; i++) {
+        if(limit != -1 && i == limit) {
+            break;
+        }
         int u = vector1[i];
         int v = vector1[i + 1];
         for (auto e : nodes[u].adj) {
@@ -341,27 +342,49 @@ int Graph::getTime(vector<int> vector1) {
     return time;
 }
 
-void Graph::limitCap(int i) {
-    for (Node &u: nodes) {
-        for (auto &e: u.adj) {
-            e.capacity = min(i, e.capacity);
+int Graph::getDuration(int a, int b) {
+    for(auto x : nodes[a].adj) {
+        if(x.dest == b) {
+            return x.weight;
         }
     }
 }
+int Graph::minDuration(int s) {
+    vector<int> ES(n+1,0);
+    vector<int> Grau(n+1,0);
+    for(auto v : nodes) {
+        v.parent = -1;
+    }
+    for(auto v : nodes) {
+        for(auto w : v.adj) {
+            Grau[w.dest]++;
+        }
+    }
+    queue<int> q;
 
-int Graph::checkMaxCap(vector<vector<int>> paths) {
-    int maxCap = 0;
-    for (int i = 0; i < paths.size(); i++) {
-        int cap = 0;
-        for (int j = 0; j < paths[i].size() - 1; j++) {
-            int u = paths[i][j];
-            int v = paths[i][j + 1];
-            for (auto e: nodes[u].adj) {
-                if(e.dest == v) cap = min(cap, e.capacity);
-                if (j == 0) cap = e.capacity;
+    q.push(s);
+
+    int durMin = -1;
+
+    while(!q.empty()) {
+        int v = q.front();
+        q.pop();
+        if(durMin < ES[v]) {
+            durMin = ES[v];
+        }
+        for(auto e : nodes[v].adj) {
+            int w = e.dest;
+            if(ES[w] < ES[v] + getDuration(v,w)) {
+                ES[w] = ES[v] + getDuration(v,w);
+                nodes[w].parent = v;
+            }
+            Grau[w]--;
+            if(Grau[w] == 0) {
+                q.push(w);
             }
         }
-        maxCap += cap;
     }
-    return maxCap;
+    int a = 2;
+    return durMin;
 }
+

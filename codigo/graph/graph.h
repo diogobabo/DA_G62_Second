@@ -34,7 +34,10 @@ class Graph {
 
 public:
 
+    int minDuration(int s);
+    void teste25(int s, int t);
     vector<int> getDistances();
+    int getDuration(int a, int b);
 
     // Constructor: nr nodes and direction (default: undirected)
     explicit Graph(int nodes, bool dir = false);
@@ -69,17 +72,11 @@ public:
 
     int pathCapacity(vector<int> vector1);
 
-    static int fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
+    static int fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths);
 
     Graph createResidual();
 
-    int getTime(vector<int> vector1);
-
-    void limitCap(int i);
-
-    void kMaxCapWays(int s, int t, vector<vector<int>> *paths, int dimension);
-
-    int checkMaxCap(vector<vector<int>> vector1);
+    int getTime(vector<int> vector1, int limit = -1);
 };
 
 #endif //DA_T6_G62_GRAPH_H
