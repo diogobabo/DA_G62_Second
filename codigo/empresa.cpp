@@ -100,11 +100,10 @@ void Empresa::two3(int s, int t) {
         }
         cout << endl;
     }
-    cout << "The group will be reunited after : " << max_time << endl;
 }
 
 void Empresa::two4(int s, int t) {
-    this->rede.minDuration(s,t);
+    cout << "Time after which the groups reunites: " << this->rede.minDuration(s,t) << endl;
     this->rede.latestFinish(s,t);
     /*
     Graph residual = this->rede.createResidual();

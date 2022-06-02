@@ -348,7 +348,6 @@ int Graph::getDuration(int a, int b) {
     }
 }
 int Graph::minDuration(int s,int t) {
-
     Graph residual = this->createResidual();
 
     vector<vector<int>> paths;
@@ -420,15 +419,82 @@ int Graph::minDuration(int s,int t) {
             }
         }
     }
-    int a = 3;
     return durMin;
 }
 
 int Graph::latestFinish(int s, int t) {
 
     Graph residual = this->createResidual();
+
     vector<vector<int>> paths;
+    vector<pair<int,int>> waitTime;
     fordFulkerson(residual, s, t, &paths);
+
+    for(auto &x :residual.nodes) {
+        for(auto &y : x.adj) {
+            y.flow = 0;
+        }
+    }
+    for(auto x : paths) {
+        for(int i = 0; i < x.size() - 1; i++) {
+            int from = x[i];
+            int to = x[i+1];
+            for(int j = 0; j < residual.nodes.size(); j++) {
+                for(auto &w : residual.nodes[j].adj) {
+                    if(j == from && to == w.dest) {
+                        w.flow = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    vector<int> Pred(n+1,-1);
+    vector<int> Grau2(n+1,0);
+    queue<int> q2;
+
+    for(int i = 1; i < residual.nodes.size(); i++) {
+        for(auto w : residual.nodes[i].adj) {
+            if(w.flow == 0) {
+                continue;
+            }
+            int no = w.dest;
+            Grau2[no]++;
+        }
+    }
+
+    for(int i = 1; i < Grau2.size(); i++) {
+        if(Grau2[i] == 0) {
+            q2.push(i);
+        }
+    }
+
+
+    int durMin = -1;
+    int vf = -1;
+
+    while(!q2.empty()) {
+        int v = q2.front();
+        q2.pop();
+        if(durMin < ES[v]) {
+            durMin = ES[v];
+            vf = v;
+        }
+        for(auto e : residual.nodes[v].adj) {
+            int w = e.dest;
+            if(e.flow == 0) {
+                continue;
+            }
+            if(ES[w] < ES[v] + e.weight) {
+                ES[w] = ES[v] + e.weight;
+                Pred[w] = v;
+            }
+            Grau2[w]--;
+            if(Grau2[w] == 0) {
+                q2.push(w);
+            }
+        }
+    }
 
 
     for(auto &x :this->nodes) {
@@ -452,7 +518,6 @@ int Graph::latestFinish(int s, int t) {
 
     Graph graphT = createTranspose();
 
-    int durMin = minDuration(s,t);
 
     for(auto &x : LF) {
         x = durMin;
@@ -508,7 +573,16 @@ int Graph::latestFinish(int s, int t) {
             FT[x.dest] = LF[x.dest] - x.weight - ES[i];
         }
     }
-    int a = 4;
+
+    cout << "Nodes with max wait time: " << endl;
+    auto num = max_element(std::begin(FT), std::end(FT));
+    for(int i = 0; i < FT.size(); i++) {
+        if (FT[i] == *num) {
+            cout << i << endl;
+        }
+    }
+    cout << FT.size() - 1 << endl;
+    return 0;
 }
 
 int Graph::checkMaxCap(vector<vector<int>> paths) {
