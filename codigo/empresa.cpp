@@ -105,6 +105,7 @@ void Empresa::two3(int s, int t) {
 
 void Empresa::two4(int s, int t) {
     this->rede.minDuration(s,t);
+    this->rede.latestFinish(s,t);
     /*
     Graph residual = this->rede.createResidual();
     vector<vector<int>> paths;

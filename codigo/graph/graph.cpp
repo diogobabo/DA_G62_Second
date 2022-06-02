@@ -5,7 +5,7 @@
 #include <climits>
 
 // Constructor: nr nodes and direction (default: undirected)
-Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
+Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1), ES(num+1), LF(num+1){
 }
 
 // Add edge from source to destination with a certain weight
@@ -375,7 +375,6 @@ int Graph::minDuration(int s,int t) {
     }
 
     vector<int> Pred(n+1,-1);
-    vector<int> ES(n+1,0);
     vector<int> Grau(n+1,0);
     queue<int> q;
 
@@ -421,10 +420,96 @@ int Graph::minDuration(int s,int t) {
             }
         }
     }
-    int a = 2;
+    int a = 3;
     return durMin;
 }
 
+int Graph::latestFinish(int s, int t) {
+
+    Graph residual = this->createResidual();
+    vector<vector<int>> paths;
+    fordFulkerson(residual, s, t, &paths);
+
+
+    for(auto &x :this->nodes) {
+        for(auto &y : x.adj) {
+            y.flow = 0;
+        }
+    }
+    for(auto x : paths) {
+        for(int i = 0; i < x.size() - 1; i++) {
+            int from = x[i];
+            int to = x[i+1];
+            for(int j = 0; j < this->nodes.size(); j++) {
+                for(auto &w : this->nodes[j].adj) {
+                    if(j == from && to == w.dest) {
+                        w.flow = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    Graph graphT = createTranspose();
+
+    int durMin = minDuration(s,t);
+
+    for(auto &x : LF) {
+        x = durMin;
+    }
+
+    vector<int> Grau(n+1,0);
+    vector<int> LS(n+1);
+    vector<int> FT(n+1);
+
+
+    for(int i = 1; i < graphT.nodes.size(); i++) {
+        for(auto w : graphT.nodes[i].adj) {
+            int no = w.dest;
+            if(w.flow == 0) {
+                continue;
+            }
+            Grau[no]++;
+        }
+    }
+
+    queue<int> q;
+
+    for(int i = 1; i < Grau.size(); i++) {
+        if(Grau[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    while(!q.empty()) {
+        int v = q.front();
+        q.pop();
+        for(auto &e : graphT.nodes[v].adj) {
+            int w = e.dest;
+            if(e.flow == 0) {
+                continue;
+            }
+            if(LF[w] > LF[v] - e.weight) {
+                LF[w] = LF[v] - e.weight;
+            }
+            Grau[w]--;
+            if(Grau[w] == 0) {
+                q.push(w);
+            }
+        }
+    }
+
+    vector<int> temp;
+    for(int i = 1; i < nodes.size(); i++) {
+        for(auto x : nodes[i].adj) {
+            if(x.flow == 0) {
+                continue;
+            }
+            FT[x.dest] = LF[x.dest] - x.weight - ES[i];
+        }
+    }
+    int a = 4;
+}
 
 int Graph::checkMaxCap(vector<vector<int>> paths) {
     int maxCap = 0;
@@ -443,3 +528,22 @@ int Graph::checkMaxCap(vector<vector<int>> paths) {
     return maxCap;
 }
 
+Graph Graph::createTranspose() {
+    Graph r(this->n, true);
+    for(int i = 1; i <= n; i++) {
+        for(auto y : nodes[i].adj) {
+            r.addEdge(y.dest,i,y.weight,y.capacity,y.flow);
+        }
+    }
+    return r;
+}
+
+int Graph::findDuration(int from, int to) {
+    for(int i = 1; i < nodes.size(); i++) {
+        for(auto x : nodes[i].adj) {
+            if(i == from && x.dest == to) {
+                return x.weight;
+            }
+        }
+    }
+}

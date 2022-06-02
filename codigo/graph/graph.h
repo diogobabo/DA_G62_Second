@@ -31,11 +31,13 @@ class Graph {
     vector<Node> nodes; // The list of nodes being represented
 
     void allPathsUntil(int i, int u, bool[], int[], int&);
-
+    vector<int> ES;
+    vector<int> LF;
 public:
 
     int minDuration(int s,int t);
-    void teste25(int s, int t);
+
+    int latestFinish(int s, int t);
     vector<int> getDistances();
     int getDuration(int a, int b);
 
@@ -64,6 +66,8 @@ public:
     int prim(int v);
     int kruskal();
 
+    int findDuration(int from, int to);
+
     int printDirections();
 
     void MaxCapWays(int s);
@@ -75,6 +79,8 @@ public:
     static int fordFulkerson(Graph& residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
 
     Graph createResidual();
+
+    Graph createTranspose();
 
     int getTime(vector<int> vector1, int limit = -1);
 
