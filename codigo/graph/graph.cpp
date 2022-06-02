@@ -574,8 +574,9 @@ int Graph::latestFinish(int s, int t) {
         }
     }
 
-    cout << "Nodes with max wait time: " << endl;
     auto num = max_element(std::begin(FT), std::end(FT));
+    cout << "Max Wait Time: " << *num << endl;
+    cout << "Nodes with max wait time: " << endl;
     for(int i = 0; i < FT.size(); i++) {
         if (FT[i] == *num) {
             cout << i << endl;
