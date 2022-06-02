@@ -570,7 +570,9 @@ int Graph::latestFinish(int s, int t) {
             if(x.flow == 0) {
                 continue;
             }
-            FT[x.dest] = LF[x.dest] - x.weight - ES[i];
+            if(LF[x.dest] - x.weight - ES[i] > FT[x.dest]) {
+                FT[x.dest] = LF[x.dest] - x.weight - ES[i];
+            }
         }
     }
 
@@ -582,7 +584,6 @@ int Graph::latestFinish(int s, int t) {
             cout << i << endl;
         }
     }
-    cout << FT.size() - 1 << endl;
     return 0;
 }
 
