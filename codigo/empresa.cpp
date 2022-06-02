@@ -104,6 +104,8 @@ void Empresa::two3(int s, int t) {
 }
 
 void Empresa::two4(int s, int t) {
+    this->rede.minDuration(s,t);
+    /*
     Graph residual = this->rede.createResidual();
     vector<vector<int>> paths;
     vector<pair<int,int>> waitTime;
@@ -132,7 +134,7 @@ void Empresa::two4(int s, int t) {
                 }
             }
         }
-    }
+    }*/
 
 }
 

@@ -273,7 +273,7 @@ int Graph::pathCapacity(vector<int> vector1) {
     return cap;
 }
 
-int Graph::fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths, int dimension) {
+int Graph::fordFulkerson(Graph& residual, int s, int t, vector<vector<int>> *paths, int dimension) {
     int max_flow = 0;
 
     while (true) {
@@ -314,14 +314,10 @@ Graph Graph::createResidual() {
     for (int v = 1; v <= n; v++) {
         for (auto e: nodes[v].adj) {
             r.addEdge(v, e.dest, e.weight, e.capacity - e.flow, e.flow);
-        }
-    }
-
-    for (int v = 1; v <= r.n; v++) {
-        for (auto e: r.nodes[v].adj) {
             r.addEdge(e.dest, v, e.weight, e.flow, e.capacity-e.flow);
         }
     }
+
     return r;
 }
 
@@ -351,34 +347,73 @@ int Graph::getDuration(int a, int b) {
         }
     }
 }
-int Graph::minDuration(int s) {
-    vector<int> ES(n+1,0);
-    vector<int> Grau(n+1,0);
-    for(auto v : nodes) {
-        v.parent = -1;
-    }
-    for(auto v : nodes) {
-        for(auto w : v.adj) {
-            Grau[w.dest]++;
+int Graph::minDuration(int s,int t) {
+
+    Graph residual = this->createResidual();
+
+    vector<vector<int>> paths;
+    vector<pair<int,int>> waitTime;
+    fordFulkerson(residual, s, t, &paths);
+
+    for(auto &x :residual.nodes) {
+        for(auto &y : x.adj) {
+            y.flow = 0;
         }
     }
+    for(auto x : paths) {
+        for(int i = 0; i < x.size() - 1; i++) {
+            int from = x[i];
+            int to = x[i+1];
+            for(int j = 0; j < residual.nodes.size(); j++) {
+                for(auto &w : residual.nodes[j].adj) {
+                    if(j == from && to == w.dest) {
+                        w.flow = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    vector<int> Pred(n+1,-1);
+    vector<int> ES(n+1,0);
+    vector<int> Grau(n+1,0);
     queue<int> q;
 
-    q.push(s);
+    for(int i = 1; i < residual.nodes.size(); i++) {
+        for(auto w : residual.nodes[i].adj) {
+            if(w.flow == 0) {
+                continue;
+            }
+            int no = w.dest;
+            Grau[no]++;
+        }
+    }
+
+    for(int i = 1; i < Grau.size(); i++) {
+        if(Grau[i] == 0) {
+            q.push(i);
+        }
+    }
+
 
     int durMin = -1;
+    int vf = -1;
 
     while(!q.empty()) {
         int v = q.front();
         q.pop();
         if(durMin < ES[v]) {
             durMin = ES[v];
+            vf = v;
         }
-        for(auto e : nodes[v].adj) {
+        for(auto e : residual.nodes[v].adj) {
             int w = e.dest;
-            if(ES[w] < ES[v] + getDuration(v,w)) {
-                ES[w] = ES[v] + getDuration(v,w);
-                nodes[w].parent = v;
+            if(e.flow == 0) {
+                continue;
+            }
+            if(ES[w] < ES[v] + e.weight) {
+                ES[w] = ES[v] + e.weight;
+                Pred[w] = v;
             }
             Grau[w]--;
             if(Grau[w] == 0) {
@@ -389,6 +424,7 @@ int Graph::minDuration(int s) {
     int a = 2;
     return durMin;
 }
+
 
 int Graph::checkMaxCap(vector<vector<int>> paths) {
     int maxCap = 0;

@@ -34,7 +34,7 @@ class Graph {
 
 public:
 
-    int minDuration(int s);
+    int minDuration(int s,int t);
     void teste25(int s, int t);
     vector<int> getDistances();
     int getDuration(int a, int b);
@@ -72,7 +72,7 @@ public:
 
     int pathCapacity(vector<int> vector1);
 
-    static int fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
+    static int fordFulkerson(Graph& residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
 
     Graph createResidual();
 
