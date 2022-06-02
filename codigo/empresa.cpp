@@ -100,7 +100,6 @@ void Empresa::two3(int s, int t) {
         }
         cout << endl;
     }
-    cout << "The group will be reunited after : " << max_time << endl;
 }
 
 void Empresa::two4(int s, int t) {
