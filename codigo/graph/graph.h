@@ -24,6 +24,7 @@ class Graph {
         bool visited;   // As the node been visited on a search?
         int distance;
         int parent;
+        bool use = false;
     };
 
     int n;              // Graph size (vertices are numbered from 1 to n)
@@ -40,6 +41,10 @@ public:
     int latestFinish(int s, int t);
     vector<int> getDistances();
     int getDuration(int a, int b);
+    void MaxCapWaysWithUse(int s);
+    void setPath(vector<int> vector1);
+    int unusedNodes();
+    void setUseNode();
 
     // Constructor: nr nodes and direction (default: undirected)
     explicit Graph(int nodes, bool dir = false);

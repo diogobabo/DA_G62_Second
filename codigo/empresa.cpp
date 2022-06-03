@@ -25,13 +25,34 @@ void Empresa::one2(int s, int t) {
 
     vector<int> path;
     vector<int> d = rede.getDistances();
+
+    vector<vector<int>> solutions;
+    vector<int> pathAux;
+    vector<int> capsAux;
+
     int transbordos = d[t];
 
+    int maxCap;
+
     rede.getPath(&path, t);
-    int groupD = rede.pathCapacity(path);
+    int pathCap = rede.pathCapacity(path);
+
+    rede.setPath(path);
+
+    while(rede.unusedNodes()>1){
+        rede.MaxCapWaysWithUse(s);
+        pathAux.clear();
+        rede.getPath(&pathAux, t);
+        if(solutions.empty() || solutions.back() != pathAux){
+            solutions.push_back(pathAux);
+            vector<int> d1 = rede.getDistances();
+            capsAux.push_back(d1[t]);
+        }
+        rede.setUseNode();
+    }
 
     cout << "1.2) Mínimo de transbordos entre " << s << " para " << t << ": " << transbordos << endl;
-    cout << "Dimensão máxima do grupo (sem se separar): " << groupD << endl;
+    cout << "Dimensão máxima do grupo (sem se separar): " << pathCap << endl;
     cout << path[0];
     for (int i = 1; i < path.size(); i++) {
         cout << " -> "<< path[i];
