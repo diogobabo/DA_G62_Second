@@ -38,15 +38,19 @@ void Empresa::one2(int s, int t) {
     int pathCap = rede.pathCapacity(path);
 
     rede.setPath(path);
-
+    solutions.push_back(path);
+    capsAux.push_back(pathCap);
     while(rede.unusedNodes()>1){
         rede.MaxCapWaysWithUse(s);
         pathAux.clear();
         rede.getPath(&pathAux, t);
-        if(solutions.empty() || solutions.back() != pathAux){
+        if(solutions.back() != pathAux){
             solutions.push_back(pathAux);
             vector<int> d1 = rede.getDistances();
             capsAux.push_back(d1[t]);
+            if(path == pathAux){
+                break;
+            }
         }
         rede.setUseNode();
     }
