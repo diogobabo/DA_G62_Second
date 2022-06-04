@@ -26,7 +26,7 @@ void Empresa::one2(int s, int t) {
     vector<int> path;
     vector<int> d = rede.getDistances();
 
-    vector<vector<int>> solutions;
+    vector<pair<vector<int>,int>> solutions;
     vector<int> pathAux;
     vector<int> capsAux;
 
@@ -38,21 +38,44 @@ void Empresa::one2(int s, int t) {
     int pathCap = rede.pathCapacity(path);
 
     rede.setPath(path);
-    solutions.push_back(path);
-    capsAux.push_back(pathCap);
+    solutions.push_back(pair<vector<int>,int>(path,pathCap));
     while(rede.unusedNodes()>1){
         rede.MaxCapWaysWithUse(s);
         pathAux.clear();
         rede.getPath(&pathAux, t);
-        if(solutions.back() != pathAux){
-            solutions.push_back(pathAux);
+        if(solutions.back().first != pathAux){
             vector<int> d1 = rede.getDistances();
-            capsAux.push_back(d1[t]);
-            if(path == pathAux){
-                break;
-            }
+            solutions.push_back(pair<vector<int>,int>(pathAux,d1[t]));
         }
         rede.setUseNode();
+    }
+
+    sort(solutions.begin(), solutions.end(), sortPair);
+
+    solutions.pop_back();
+    reverse(solutions.begin(), solutions.end());
+
+    pair<vector<int>,int> top1,top2,top3;
+
+    for(auto &sol: solutions){
+        if(sol.second != 0 && top1.first.empty()){
+            top1 = sol;
+        }else if(!top1.first.empty() && sol.second != top1.second && top2.first.empty()){
+            top2 = sol;
+        } else if(!top1.first.empty() && !top2.first.empty() && sol.second != top2.second ){
+            top3 = sol;
+            break;
+        }
+    }
+
+    solutions.clear();
+
+    solutions.push_back(top1);
+    if(top2.second>top1.second){
+        solutions.push_back(top2);
+    }
+    if(solutions.back().second<top3.second){
+        solutions.push_back(top3);
     }
 
     cout << "1.2) Mínimo de transbordos entre " << s << " para " << t << ": " << transbordos << endl;
@@ -62,6 +85,17 @@ void Empresa::one2(int s, int t) {
         cout << " -> "<< path[i];
     }
     cout << endl;
+    for(int z = 1; z <solutions.size();z++){
+        cout << "Outra parento-solução: "<< endl;
+        cout << "Numero de trasnbordos : "<<solutions[z].first.size() << endl;
+        cout << "Capacidade do grupo :"<< solutions[z].second << endl;
+        cout << solutions[z].first[0];
+        for (int i = 1; i < solutions[z].first.size(); i++) {
+            cout << " -> "<< solutions[z].first[i];
+        }
+        cout << endl;
+    }
+
 }
 
 void Empresa::two1(int s, int t) {
@@ -170,4 +204,11 @@ bool Empresa::checkCommon(vector<int> path, int n) {
         }
     }
     return false;
+}
+
+bool Empresa::sortPair(pair<vector<int>, int> &p1, pair<vector<int>, int> &p2) {
+    if(p1.first.size() == p2.first.size()){
+        return p1.second>p2.second;
+    }
+    return p1.first.size()>p2.first.size();
 }
