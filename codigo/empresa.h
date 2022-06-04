@@ -29,6 +29,13 @@ public:
 
     void two4(int s, int t);
 
+    void two5(int s, int t);
+
+    void two4All(int s, int t);
+
+    void two5All(int s, int t);
+
+
     bool checkCommon(vector<int> path, int n);
 
     static bool sortPair(pair<vector<int>,int> &p1,pair<vector<int>,int> &p2);

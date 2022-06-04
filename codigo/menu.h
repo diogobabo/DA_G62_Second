@@ -27,6 +27,12 @@ public:
      */
     int Cenario2();
 
+    /**
+     * Cenario 2
+     * @return 0 em caso de sucesso
+     */
+    int CenarioOptions(int s, int t);
+
 };
 
 

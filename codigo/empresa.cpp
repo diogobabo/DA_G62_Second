@@ -163,38 +163,19 @@ void Empresa::two3(int s, int t) {
 
 void Empresa::two4(int s, int t) {
     cout << "Time after which the groups reunites: " << this->rede.minDuration(s,t) << endl;
+
+}
+
+void Empresa::two5(int s, int t) {
     this->rede.latestFinish(s,t);
-    /*
-    Graph residual = this->rede.createResidual();
-    vector<vector<int>> paths;
-    vector<pair<int,int>> waitTime;
-    Graph::fordFulkerson(residual, s, t, &paths);
+}
 
-    for(int i = 0; i < paths.size(); i++) {
-        for(int j = 1; j < paths[i].size(); j++) {
-            int num = paths[i][j];
-            for(int k = i + 1; k < paths.size(); k++){
-                if(checkCommon(paths[k],num)) {
-                    int temp = rede.getTime(paths[k],num);
-                    int temp2 = rede.getTime(paths[i],num);
-                    int res = abs(temp - temp2);
-                    if(res != 0) {
-                        bool flag = false;
-                        for(auto x : waitTime)  {
-                            if(x.first == num) {
-                                x.second = max(res,x.second);
-                                flag = true;
-                            }
-                        }
-                        if(!flag){
-                            waitTime.emplace_back(num,res);
-                        }
-                    }
-                }
-            }
-        }
-    }*/
+void Empresa::two4All(int s, int t) {
+    cout << "Time after which the groups reunites: " << this->rede.minDurationAll(s,t) << endl;
+}
 
+void Empresa::two5All(int s, int t) {
+    this->rede.latestFinishAll(s,t);
 }
 
 bool Empresa::checkCommon(vector<int> path, int n) {

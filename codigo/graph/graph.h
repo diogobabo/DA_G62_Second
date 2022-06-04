@@ -37,8 +37,11 @@ class Graph {
 public:
 
     int minDuration(int s,int t);
-
     int latestFinish(int s, int t);
+
+    int minDurationAll(int s,int t);
+    int latestFinishAll(int s, int t);
+
     vector<int> getDistances();
     int getDuration(int a, int b);
     void MaxCapWaysWithUse(int s);

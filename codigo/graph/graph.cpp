@@ -468,6 +468,52 @@ int Graph::minDuration(int s,int t) {
     return durMin;
 }
 
+int Graph::minDurationAll(int s,int t) {
+    Graph residual = this->createResidual();
+
+    vector<int> Pred(n+1,-1);
+    vector<int> Grau(n+1,0);
+    queue<int> q;
+
+    for(int i = 1; i < nodes.size(); i++) {
+        for(auto w : nodes[i].adj) {
+            int no = w.dest;
+            Grau[no]++;
+        }
+    }
+
+    for(int i = 1; i < Grau.size(); i++) {
+        if(Grau[i] == 0) {
+            q.push(i);
+        }
+    }
+
+
+    int durMin = -1;
+    int vf = -1;
+
+    while(!q.empty()) {
+        int v = q.front();
+        q.pop();
+        if(durMin < ES[v]) {
+            durMin = ES[v];
+            vf = v;
+        }
+        for(auto e : nodes[v].adj) {
+            int w = e.dest;
+            if(ES[w] < ES[v] + e.weight) {
+                ES[w] = ES[v] + e.weight;
+                Pred[w] = v;
+            }
+            Grau[w]--;
+            if(Grau[w] == 0) {
+                q.push(w);
+            }
+        }
+    }
+    return durMin;
+}
+
 int Graph::latestFinish(int s, int t) {
 
     Graph residual = this->createResidual();
@@ -616,6 +662,113 @@ int Graph::latestFinish(int s, int t) {
             if(x.flow == 0) {
                 continue;
             }
+            if(LF[x.dest] - x.weight - ES[i] > FT[x.dest]) {
+                FT[x.dest] = LF[x.dest] - x.weight - ES[i];
+            }
+        }
+    }
+
+    auto num = max_element(std::begin(FT), std::end(FT));
+    cout << "Max Wait Time: " << *num << endl;
+    cout << "Nodes with max wait time: " << endl;
+    for(int i = 0; i < FT.size(); i++) {
+        if (FT[i] == *num) {
+            cout << i << endl;
+        }
+    }
+    return 0;
+}
+
+int Graph::latestFinishAll(int s, int t) {
+
+    Graph residual = this->createResidual();
+
+    vector<int> Pred(n+1,-1);
+    vector<int> Grau2(n+1,0);
+    queue<int> q2;
+
+    for(int i = 1; i < nodes.size(); i++) {
+        for(auto w : nodes[i].adj) {
+            int no = w.dest;
+            Grau2[no]++;
+        }
+    }
+
+    for(int i = 1; i < Grau2.size(); i++) {
+        if(Grau2[i] == 0) {
+            q2.push(i);
+        }
+    }
+
+
+    int durMin = -1;
+    int vf = -1;
+
+    while(!q2.empty()) {
+        int v = q2.front();
+        q2.pop();
+        if(durMin < ES[v]) {
+            durMin = ES[v];
+            vf = v;
+        }
+        for(auto e : nodes[v].adj) {
+            int w = e.dest;
+            if(ES[w] < ES[v] + e.weight) {
+                ES[w] = ES[v] + e.weight;
+                Pred[w] = v;
+            }
+            Grau2[w]--;
+            if(Grau2[w] == 0) {
+                q2.push(w);
+            }
+        }
+    }
+
+    Graph graphT = createTranspose();
+
+
+    for(auto &x : LF) {
+        x = durMin;
+    }
+
+    vector<int> Grau(n+1,0);
+    vector<int> LS(n+1);
+    vector<int> FT(n+1);
+
+
+    for(int i = 1; i < graphT.nodes.size(); i++) {
+        for(auto w : graphT.nodes[i].adj) {
+            int no = w.dest;
+            Grau[no]++;
+        }
+    }
+
+    queue<int> q;
+
+    for(int i = 1; i < Grau.size(); i++) {
+        if(Grau[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    while(!q.empty()) {
+        int v = q.front();
+        q.pop();
+        for(auto &e : graphT.nodes[v].adj) {
+            int w = e.dest;
+            if(LF[w] > LF[v] - e.weight) {
+                LF[w] = LF[v] - e.weight;
+            }
+            Grau[w]--;
+            if(Grau[w] == 0) {
+                q.push(w);
+            }
+        }
+    }
+
+    vector<int> temp;
+    for(int i = 1; i < nodes.size(); i++) {
+        for(auto x : nodes[i].adj) {
             if(LF[x.dest] - x.weight - ES[i] > FT[x.dest]) {
                 FT[x.dest] = LF[x.dest] - x.weight - ES[i];
             }

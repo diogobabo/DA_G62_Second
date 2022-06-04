@@ -5,9 +5,7 @@ int Menu::start() {
     int option = -1;
 
     Graph g = e.getGraph();
-
     g.printDirections();
-
     cout << "Bem vindo\n";
     cout << "1) Cenário 1\n";
     cout << "2) Cenário 2\n";
@@ -81,11 +79,34 @@ int Menu::Cenario2() {
                 e.two3(s, t);
                 break;
             case 3:
-                e.two4(s, t);
+                CenarioOptions(s,t);
                 break;
             default:
                 break;
         }
     }
     return 0;
+}
+
+int Menu::CenarioOptions(int s, int t) {
+    int option = -1;
+    cout << "1) All paths\n";
+    cout << "2) Previous paths\n";
+    while (option) {
+        cout << "Insere opção (0 para sair)\n";
+        cin >> option;
+
+        switch (option) {
+            case 1:
+                e.two4All(s,t);
+                e.two5All(s,t);
+                break;
+            case 2:
+                e.two4(s,t);
+                e.two5(s,t);
+                break;
+            default:
+                break;
+        }
+    }
 }
