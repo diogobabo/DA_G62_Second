@@ -24,6 +24,7 @@ class Graph {
         bool visited;   // As the node been visited on a search?
         int distance;
         int parent;
+        bool use = false;
     };
 
     int n;              // Graph size (vertices are numbered from 1 to n)
@@ -31,13 +32,19 @@ class Graph {
     vector<Node> nodes; // The list of nodes being represented
 
     void allPathsUntil(int i, int u, bool[], int[], int&);
-
+    vector<int> ES;
+    vector<int> LF;
 public:
 
-    int minDuration(int s);
-    void teste25(int s, int t);
+    int minDuration(int s,int t);
+
+    int latestFinish(int s, int t);
     vector<int> getDistances();
     int getDuration(int a, int b);
+    void MaxCapWaysWithUse(int s);
+    void setPath(vector<int> vector1);
+    int unusedNodes();
+    void setUseNode();
 
     // Constructor: nr nodes and direction (default: undirected)
     explicit Graph(int nodes, bool dir = false);
@@ -64,6 +71,8 @@ public:
     int prim(int v);
     int kruskal();
 
+    int findDuration(int from, int to);
+
     int printDirections();
 
     void MaxCapWays(int s);
@@ -72,9 +81,11 @@ public:
 
     int pathCapacity(vector<int> vector1);
 
-    static int fordFulkerson(Graph residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
+    static int fordFulkerson(Graph& residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
 
     Graph createResidual();
+
+    Graph createTranspose();
 
     int getTime(vector<int> vector1, int limit = -1);
 

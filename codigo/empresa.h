@@ -2,6 +2,7 @@
 #define DA_T6_G62_EMPRESA_H
 
 #include <string>
+#include <algorithm>
 
 #include "graph/graph.h"
 
@@ -29,6 +30,8 @@ public:
     void two4(int s, int t);
 
     bool checkCommon(vector<int> path, int n);
+
+    static bool sortPair(pair<vector<int>,int> &p1,pair<vector<int>,int> &p2);
 };
 
 
