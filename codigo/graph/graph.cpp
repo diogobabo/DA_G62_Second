@@ -255,7 +255,6 @@ void Graph::MaxCapWaysWithUse(int s) {
 
         Node* u = &nodes[v];
         for(const Edge &e: u->adj){
-            if(!heap.hasKey(e.dest)) continue;
             if(nodes[e.dest].distance < min(u->distance, e.capacity) && nodes[e.dest].use ){
                 nodes[e.dest].parent=v;
                 nodes[e.dest].distance=e.capacity;
@@ -295,22 +294,26 @@ int Graph::pathCapacity(vector<int> vector1) {
 }
 
 void Graph::setPath(vector<int> vector1) {
-    for(int i = 0; i < vector1.size() - 1; i++){
-        int w = vector1[1];
-        nodes[w].use = true;
+    for(int i = 1; i < nodes.size(); i++){
+        nodes[i].use = false;
+    }
+    for(int i = 0; i < vector1.size(); i++){
+        nodes[vector1[i]].use = true;
     }
     return;
 }
 
 int Graph::unusedNodes(){
     int n = 0;
-    for(auto a : nodes){
-        if(!a.use)n++;
+    for(int i = 1; i < nodes.size(); i++){
+        if(!nodes[i].use){
+            n++;
+        }
     }
     return n;
 }
 void Graph::setUseNode(){
-    for(int i = 0; i < nodes.size() - 1; i++){
+    for(int i = 1; i < nodes.size(); i++){
         if(!nodes[i].use){
             nodes[i].use = true;
             break;
