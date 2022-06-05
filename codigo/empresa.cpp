@@ -2,6 +2,7 @@
 
 void Empresa::one1(int s, int t) {
     // Maior capacidade
+    Graph temp = rede;
     rede.MaxCapWays(s);
 
     vector<int> path;
@@ -17,10 +18,12 @@ void Empresa::one1(int s, int t) {
         cout << " -> "<< path[i];
     }
     cout << endl;
+    rede = temp;
 }
 
 void Empresa::one2(int s, int t) {
     // Menos transbordos
+    Graph temp = rede;
     rede.distance(s, t);
 
     vector<int> path;
@@ -95,10 +98,11 @@ void Empresa::one2(int s, int t) {
         }
         cout << endl;
     }
-
+    rede = temp;
 }
 
 void Empresa::two1(int s, int t) {
+    Graph temp = rede;
     int dimension, plus;
     cout << "2.1) Size of the group : \n";
     cin >> dimension;
@@ -136,11 +140,12 @@ void Empresa::two1(int s, int t) {
         }
         cout << endl;
     }
-
+    temp = rede;
     // algorithm
 }
 
 void Empresa::two3(int s, int t) {
+    Graph temp = rede;
     Graph residual = this->rede.createResidual();
     vector<vector<int>> paths;
 
@@ -159,23 +164,32 @@ void Empresa::two3(int s, int t) {
         }
         cout << endl;
     }
+    rede = temp;
 }
 
 void Empresa::two4(int s, int t) {
+    Graph temp = rede;
     cout << "Time after which the groups reunites: " << this->rede.minDuration(s,t) << endl;
+    rede = temp;
 
 }
 
 void Empresa::two5(int s, int t) {
+    Graph temp = rede;
     this->rede.latestFinish(s,t);
+    rede = temp;
 }
 
 void Empresa::two4All(int s, int t) {
+    Graph temp = rede;
     cout << "Time after which the groups reunites: " << this->rede.minDurationAll(s,t) << endl;
+    rede = temp;
 }
 
 void Empresa::two5All(int s, int t) {
+    Graph temp = rede;
     this->rede.latestFinishAll(s,t);
+    rede = temp;
 }
 
 bool Empresa::checkCommon(vector<int> path, int n) {

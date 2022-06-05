@@ -28,7 +28,7 @@ Graph readFile(const string& file) {
 }
 
 int main() {
-    Graph g = readFile("../input/in07_b.txt");
+    Graph g = readFile("../input/in04_b.txt");
     Empresa empresa(&g);
     Menu menu(&empresa);
     menu.start();
