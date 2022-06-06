@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "graph/graph.h"
+#include "graph.h"
 #include "menu.h"
 #include "empresa.h"
 
@@ -28,7 +28,7 @@ Graph readFile(const string& file) {
 }
 
 int main() {
-    Graph g = readFile("../input/in01_b.txt");
+    Graph g = readFile("../input/in04_b.txt");
     Empresa empresa(&g);
     Menu menu(&empresa);
     menu.start();

@@ -5,7 +5,6 @@ int Menu::start() {
     int option = -1;
 
     Graph g = e.getGraph();
-    g.printDirections();
     cout << "Bem vindo\n";
     cout << "1) Cenário 1\n";
     cout << "2) Cenário 2\n";

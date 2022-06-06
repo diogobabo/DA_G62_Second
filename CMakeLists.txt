@@ -7,7 +7,7 @@ include_directories(codigo)
 
 add_executable(da_t6_g62
         codigo/main.cpp
-        codigo/graph/graph.cpp codigo/graph/graph.h
+        codigo/graph.cpp codigo/graph.h
         codigo/graph/minHeap.h codigo/graph/disjointSets.h
         codigo/empresa.cpp codigo/empresa.h
         codigo/menu.cpp codigo/menu.h

@@ -1,7 +1,7 @@
+#include <chrono>
 #include "empresa.h"
 
 void Empresa::one1(int s, int t) {
-    // Maior capacidade
     Graph temp = rede;
     rede.MaxCapWays(s);
 
@@ -12,17 +12,16 @@ void Empresa::one1(int s, int t) {
     rede.getPath(&path, t);
 
     cout << "1.1) Dimensão do grupo (sem se separar) máxima entre " << s << " para " << t << ": " << groupD << endl;
-    cout << "Número de transbordos: " << path.size()-1 << endl;
+    cout << "Número de transbordos: " << path.size() - 1 << endl;
     cout << path[0];
     for (int i = 1; i < path.size(); i++) {
-        cout << " -> "<< path[i];
+        cout << " -> " << path[i];
     }
     cout << endl;
     rede = temp;
 }
 
 void Empresa::one2(int s, int t) {
-    // Menos transbordos
     Graph temp = rede;
     rede.distance(s, t);
 
@@ -131,7 +130,6 @@ void Empresa::two1(int s, int t) {
         cout << endl;
     }
     temp = rede;
-    // algorithm
 }
 
 void Empresa::two3(int s, int t) {

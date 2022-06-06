@@ -5,9 +5,9 @@
 #include <list>
 #include <queue>
 #include <iostream>
-#include "minHeap.h"
-#include "maxHeap.h"
-#include "disjointSets.h"
+#include "graph/minHeap.h"
+#include "graph/maxHeap.h"
+#include "graph/disjointSets.h"
 
 using namespace std;
 
@@ -36,10 +36,36 @@ class Graph {
     vector<int> LF;
 public:
 
+    /**
+     * Retorna a duração minima para o caminho entre s<->t
+     * @param s no inicial
+     * @param t no final
+     * @return a duração minima
+     */
     int minDuration(int s,int t);
+
+    /**
+     * Retorna tempo máxima espera
+     * @param s no inicial
+     * @param t no final
+     * @return a duração minima
+     */
     int latestFinish(int s, int t);
 
+    /**
+     * Retorna a duração minima para o caminho entre s<->t (Grafo Inteiro)
+     * @param s no inicial
+     * @param t no final
+     * @return a duração minima
+     */
     int minDurationAll(int s,int t);
+
+    /**
+     * Retorna tempo máxima espera (Grafo Inteiro)
+     * @param s no inicial
+     * @param t no final
+     * @return a duração minima
+     */
     int latestFinishAll(int s, int t);
 
     vector<int> getDistances();
@@ -78,16 +104,34 @@ public:
 
     int printDirections();
 
+    /*
+     * Adaptação do dijkstra para o 1.1
+     */
     void MaxCapWays(int s);
 
     void getPath(vector<int> *pVector, int t);
 
     int pathCapacity(vector<int> vector1);
 
+    /**
+     * Edmonds-Karp implementação através do fordFulkerson
+     * @param residual
+     * @param s
+     * @param t
+     * @param paths
+     * @param dimension
+     * @return
+     */
     static int fordFulkerson(Graph& residual, int s, int t, vector<vector<int>> *paths, int dimension = -1);
 
+    /**
+     * Cria um grafo residual
+     */
     Graph createResidual();
 
+    /**
+     * Cria um grafo transposto
+     */
     Graph createTranspose();
 
     int getTime(vector<int> vector1, int limit = -1);
